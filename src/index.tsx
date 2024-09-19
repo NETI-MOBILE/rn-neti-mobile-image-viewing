@@ -1,3 +1,2 @@
-export function multiply(a: number, b: number): Promise<number> {
-  return Promise.resolve(a * b);
-}
+export { ImageViewing } from './ImageViewing';
+export type { IImageModel, IImageSize, ImageViewingInstance } from './types';

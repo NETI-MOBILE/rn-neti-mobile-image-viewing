@@ -1,5 +1,7 @@
 module.exports = {
-  presets: [
-    ['module:react-native-builder-bob/babel-preset', { modules: 'commonjs' }],
+  presets: ['module:@react-native/babel-preset'],
+  plugins: [
+    ['@babel/plugin-transform-class-properties', { loose: true }],
+    'react-native-reanimated/plugin',
   ],
 };
