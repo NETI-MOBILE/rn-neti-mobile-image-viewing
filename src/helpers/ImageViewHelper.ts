@@ -2,7 +2,23 @@ import { Image } from 'react-native';
 
 import { IImageModel, IImageSize, Nullable } from '../types';
 
-export default class ImageViewRenderHelper {
+export default class ImageViewHelper {
+  static getImageAspect = async (image: IImageModel) => {
+    if (!image.url && (!image.sizes?.width || !image.sizes?.height)) {
+      // Default aspect value
+      return 1;
+    }
+
+    let aspect = ImageViewHelper.getImageAspectBySize(image.sizes);
+
+    if (!aspect) {
+      aspect = await ImageViewHelper.getImageAspectByUrl(image.url);
+    }
+
+    // Default aspect value
+    return aspect ?? 1;
+  };
+
   static getImageAspectByUrl = async (imageUrl: string): Promise<Nullable<number>> => {
     if (!imageUrl) {
       return null;
@@ -10,7 +26,7 @@ export default class ImageViewRenderHelper {
 
     return new Promise(resolve => {
       if (imageUrl) {
-        // для предотвращения memory leak, при unmount компонентов, необходимо расширить метод отменой получения данных
+        // to prevent memory leak, when unmount components, it is necessary to extend the method with receiving data cancellation
         Image.getSize(
           imageUrl,
           (width: number, height: number) => {
@@ -30,25 +46,5 @@ export default class ImageViewRenderHelper {
     }
 
     return Number((size.width / size.height).toFixed(2));
-  };
-
-  static getImageAspect = async (image: IImageModel) => {
-    if (!image) {
-      // Дефолтное значение для aspect
-      return 1;
-    }
-
-    let aspect = ImageViewRenderHelper.getImageAspectBySize(image.sizes);
-
-    if (!aspect) {
-      aspect = await ImageViewRenderHelper.getImageAspectByUrl(image.url);
-    }
-
-    if (aspect) {
-      return aspect;
-    }
-
-    // Дефолтное значение для aspect
-    return 1;
   };
 }

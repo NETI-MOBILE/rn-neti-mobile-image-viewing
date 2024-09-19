@@ -3,15 +3,15 @@ import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo
 import {
   ActivityIndicator,
   FlatList,
+  FlatListProps,
+  Platform,
   StyleSheet,
   Text,
   useWindowDimensions,
   View,
-  FlatListProps,
-  ViewToken,
   ViewabilityConfig,
+  ViewToken,
 } from 'react-native';
-import { Platform } from 'react-native';
 import {
   FlatList as GestureFlatList,
   Gesture,
@@ -20,36 +20,33 @@ import {
 } from 'react-native-gesture-handler';
 import Orientation, { OrientationType, useDeviceOrientationChange } from 'react-native-orientation-locker';
 import Animated, { AnimatedProps, SharedValue } from 'react-native-reanimated';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { CloseButton } from './components/CloseButton';
 import { ImageItem } from './components/ImageItem';
 import OrientationHelper from './helpers/OrientationHelper';
 import { useAnimatedImageView } from './hooks/useAnimatedImageView';
 import { ImageViewingColors } from './settings/ImageViewingColors';
-import { IImageModel, ImageViewingInstance, ImageViewingProps } from './types';
+import { CloseButtonType, IImageModel, ImageViewingInstance, ImageViewingProps, Nullable } from './types';
 
-// Для iOS необходимо использовать FlatList из react-native.
+// For iOS, you need to use the FlatList from react-native.
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList<IImageModel>);
-// Для android необходимо использовать FlatList из react-native-gesture-handler.
+// For android, you need to use the FlatList from react-native-gesture-handler.
 const AnimatedGestureFlatList = Animated.createAnimatedComponent(GestureFlatList<IImageModel>);
 
 export const ImageViewing = forwardRef<ImageViewingInstance, ImageViewingProps>((props, ref) => {
-  const insets = useSafeAreaInsets();
-
   const { width, height } = useWindowDimensions();
 
-  const flatListRef = useRef<FlatList>(null);
-  const gestureFlatListRef = useRef<GestureFlatList>(null);
+  const flatListRef = useRef<Nullable<FlatList>>(null);
+  const gestureFlatListRef = useRef<Nullable<GestureFlatList>>(null);
 
-  // Для того, чтобы iOS работал вместе с скроллом, необходим Gesture.Native() в GestureDetector, в котором находится FlatList.
+  // In order for iOS to work together with scrolling, Gesture.Native() is needed in the GestureDetector where the FlatList is located.
   const flatListNative = useRef(Gesture.Native());
 
   const [isLoading, setLoading] = useState<boolean>(false);
   const [orientation, setOrientation] = useState<OrientationType>(OrientationType['PORTRAIT']);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
 
-  const controller = useAnimatedImageView({ orientation });
+  const controller = useAnimatedImageView({ orientation, insets: props.insets });
 
   const footerStyle = useMemo(() => {
     if (OrientationHelper.isRightLandscapeOrientation(orientation)) {
@@ -65,23 +62,14 @@ export const ImageViewing = forwardRef<ImageViewingInstance, ImageViewingProps>(
 
   const headerStyle = useMemo(() => {
     if (OrientationHelper.isRightLandscapeOrientation(orientation)) {
-      return {
-        left: 0,
-        top: insets.top,
-      };
+      return { left: 0, top: props.insets?.top ?? 0 };
     }
 
     if (OrientationHelper.isLeftLandscapeOrientation(orientation)) {
-      return {
-        right: 0,
-        top: insets.top,
-      };
+      return { right: 0, top: props.insets?.top ?? 0 };
     }
 
-    return {
-      top: insets.top,
-      left: 0,
-    };
+    return { top: props.insets?.top ?? 0, left: 0 };
   }, [orientation]);
 
   useEffect(() => {
@@ -108,7 +96,7 @@ export const ImageViewing = forwardRef<ImageViewingInstance, ImageViewingProps>(
     }, 501);
   }, []);
 
-  // Чтобы при нажатии на системную кнопку закрывать просмотр картинок.
+  // To close the image view when clicking on the system button.
   const handleBackAction = useCallback(() => {
     if (controller.isShowImage) {
       handleCloseModal();
@@ -174,7 +162,7 @@ export const ImageViewing = forwardRef<ImageViewingInstance, ImageViewingProps>(
 
   const viewabilityConfigCallbackPairs = useRef<
     ViewabilityConfig | SharedValue<ViewabilityConfig | undefined> | undefined
-  >({ waitForInteraction: true, viewAreaCoveragePercentThreshold: Platform.OS === 'ios' ? 90 : 60 });
+    >({ waitForInteraction: true, viewAreaCoveragePercentThreshold: Platform.OS === 'ios' ? 90 : 60 });
 
   // Handlers
 
@@ -220,7 +208,7 @@ export const ImageViewing = forwardRef<ImageViewingInstance, ImageViewingProps>(
 
   const renderList = useCallback((props: AnimatedProps<FlatListProps<IImageModel>>) => {
     if (Platform.OS === 'ios') {
-      // Чтобы на iOS работали жесты, FlatList нужно обернуть в GestureDetector.
+      // In order for gestures to work on iOS, the FlatList must be wrapped in a GestureDetector.
       return (
         <GestureDetector gesture={flatListNative.current}>
           <AnimatedFlatList ref={flatListRef} {...props} />
@@ -239,23 +227,23 @@ export const ImageViewing = forwardRef<ImageViewingInstance, ImageViewingProps>(
             <ActivityIndicator size={'large'} />
           </View>
         )}
-        <Animated.View style={[styles.flex, { paddingTop: Platform.OS === 'ios' ? 0 : insets.top }]}>
+        <Animated.View style={[styles.flex, { paddingTop: Platform.OS === 'ios' ? 0 : props.insets?.top ?? 0 }]}>
           <Animated.View style={[styles.containerHeader, headerStyle]}>
             <View style={styles.containerCloseButton}>
               <CloseButton
-                bgColor={ImageViewingColors.backgroundCloseButton}
-                color={ImageViewingColors.iconCloseButtonColor}
+                bgColor={ImageViewingColors.closeButtonBackground}
+                type={CloseButtonType.light}
                 containerStyle={styles.closeButton}
-                handleClose={handleCloseModal}
+                onPress={handleCloseModal}
               />
             </View>
           </Animated.View>
-          {/* Прописываем параметры для списка */}
+          {/* Set the parameters for the list */}
           {renderList({
-            // Параметры отрисовки и данных
+            // Rendering and data parameters
             data: props.images,
             bounces: false,
-            // При landscape-right список нужно инвертировать, что бы сохранять последовательность элементов, как при landscape-left.
+            // With landscape-right, the list must be inverted in order to keep the sequence of elements as with landscape-left.
             inverted: OrientationHelper.isRightLandscapeOrientation(orientation),
             horizontal: !OrientationHelper.isLandscapeOrientation(orientation),
             pagingEnabled: true,
@@ -265,13 +253,13 @@ export const ImageViewing = forwardRef<ImageViewingInstance, ImageViewingProps>(
             viewabilityConfig: viewabilityConfigCallbackPairs.current,
             onViewableItemsChanged: info => onViewableItemsChanged(info, controller.isShowImage),
             animatedProps: controller.animatedProps,
-            // Параметры оптимизации
+            // Optimization parameters
             removeClippedSubviews: true,
             initialNumToRender: 10,
             maxToRenderPerBatch: 5,
             keyExtractor: handleKeyExtractor,
             getItemLayout: handleGetLayout,
-            // Рендер функции
+            // Rendering functions
             renderItem,
           })}
           <Animated.View style={[controller.footerStyle, styles.footerContainer, footerStyle]}>
@@ -365,6 +353,6 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     fontWeight: '400',
     letterSpacing: 0.5,
-    color: ImageViewingColors.textPageColor,
+    color: ImageViewingColors.textColor,
   },
 });

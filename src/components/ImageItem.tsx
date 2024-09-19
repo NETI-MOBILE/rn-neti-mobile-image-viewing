@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { FC, useEffect } from 'react';
 import { StyleSheet, useWindowDimensions, View } from 'react-native';
 import { GestureDetector, GestureType } from 'react-native-gesture-handler';
 import { OrientationType } from 'react-native-orientation-locker';
@@ -9,7 +9,7 @@ import { useGestureImageView } from '../hooks/useGestureImageView';
 import { IImageModel } from '../types';
 import { ImageWithAspect } from './ImageWithAspect';
 
-interface IProps {
+interface IImageItemProps {
   image: IImageModel;
   controller: IAnimatedImageView;
   orientation: OrientationType;
@@ -24,14 +24,14 @@ interface IProps {
   isSwipeEnabled?: boolean;
 }
 
-export const ImageItem = (props: IProps) => {
+export const ImageItem: FC<IImageItemProps> = props => {
   const { width, height } = useWindowDimensions();
 
   useEffect(() => {
     gestureController.resetGesture();
   }, [props.orientation]);
 
-  // Для того, чтобы жесты не сохраняли свое состояние при закрытии, сбрасываем их значения.
+  // In order for the gestures not to keep their state on closing, we reset their values
   useEffect(() => {
     if (!props.controller.isShowImage) {
       gestureController.resetGesture();

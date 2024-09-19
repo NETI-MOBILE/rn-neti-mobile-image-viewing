@@ -1,16 +1,16 @@
 import { useState } from 'react';
-import { StatusBar, ViewStyle } from 'react-native';
+import { StatusBar, StyleProp, ViewStyle } from 'react-native';
 import { OrientationType } from 'react-native-orientation-locker';
 import { interpolate, useAnimatedProps, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import OrientationHelper from '../helpers/OrientationHelper';
+import { IEdgeInsets } from '../types';
 
 export interface IAnimatedImageView {
   isShowImage: boolean;
-  modalStyle: ViewStyle;
-  rotateStyle: ViewStyle;
-  footerStyle: ViewStyle;
+  modalStyle: StyleProp<ViewStyle>;
+  rotateStyle: StyleProp<ViewStyle>;
+  footerStyle: StyleProp<ViewStyle>;
   animatedProps: Partial<{ scrollEnabled: boolean }>;
 
   onShow: () => void;
@@ -23,11 +23,10 @@ export interface IAnimatedImageView {
 
 interface IProps {
   orientation: OrientationType;
+  insets?: IEdgeInsets;
 }
 
 export const useAnimatedImageView = (props: IProps): IAnimatedImageView => {
-  const insets = useSafeAreaInsets();
-
   const rotate = useSharedValue<number>(0);
   const opacity = useSharedValue<number>(0);
   const isShowOverlay = useSharedValue<number>(1);
@@ -44,11 +43,7 @@ export const useAnimatedImageView = (props: IProps): IAnimatedImageView => {
 
   const rotateStyle = useAnimatedStyle(() => {
     return {
-      transform: [
-        {
-          rotate: `${interpolate(rotate.value, [-1, 0, 1], [90, 0, -90])}deg`,
-        },
-      ],
+      transform: [{ rotate: `${interpolate(rotate.value, [-1, 0, 1], [90, 0, -90])}deg` }],
     };
   });
 
@@ -61,11 +56,7 @@ export const useAnimatedImageView = (props: IProps): IAnimatedImageView => {
       props.orientation === OrientationType['FACE-UP']
     ) {
       return {
-        transform: [
-          {
-            translateY: interpolate(isShowOverlay.value, [0, 1], [800, 0 - insets.bottom]),
-          },
-        ],
+        transform: [{ translateY: interpolate(isShowOverlay.value, [0, 1], [800, 0 - (props.insets?.bottom ?? 0)]) }],
       };
     }
 

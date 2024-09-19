@@ -1,51 +1,51 @@
-import React, { useState, FC } from 'react';
+import React, { useState, FC, useEffect } from 'react';
 import { ActivityIndicator, Image, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { OrientationType } from 'react-native-orientation-locker';
 
-import ImageViewRenderHelper from '../helpers/ImageViewRenderHelper';
+import ImageViewHelper from '../helpers/ImageViewHelper';
 import OrientationHelper from '../helpers/OrientationHelper';
 import { IImageModel, Nullable } from '../types';
 
-interface IImageWithAspect {
+interface IImageWithAspectProps {
   image: IImageModel;
   orientation: OrientationType;
 }
 
-export const ImageWithAspect: FC<IImageWithAspect> = props => {
+export const ImageWithAspect: FC<IImageWithAspectProps> = props => {
   const { width } = useWindowDimensions();
 
   const [isLoadingContent, setIsLoadingContent] = useState(true);
   const [imageAspect, setImageAspect] = useState<Nullable<number>>(null);
 
+  useEffect(() => {
+    (async () => {
+      if (!imageAspect) {
+        await handleSetImageAspect();
+      }
+    })();
+  }, []);
+
   // Handlers
 
-  const handleLoadingStart = () => {
+  const handleOnLoadStart = () => {
     setIsLoadingContent(true);
   };
 
-  const handleLoadingEnd = () => {
+  const handleOnLoad = () => {
     setIsLoadingContent(false);
   };
 
-  const handleOnError = () => {
-    handleLoadingEnd();
-  };
-
   const handleSetImageAspect = async () => {
-    const aspect = await ImageViewRenderHelper.getImageAspect(props.image);
+    const aspect = await ImageViewHelper.getImageAspect(props.image);
     setImageAspect(aspect);
   };
 
   // Renders
 
-  if (!imageAspect) {
-    handleSetImageAspect();
-  }
-
   return imageAspect ? (
     <View
       style={[
-        styles.containerImage,
+        styles.imageContainer,
         {
           aspectRatio: imageAspect,
           width: width,
@@ -56,31 +56,27 @@ export const ImageWithAspect: FC<IImageWithAspect> = props => {
       {props.image?.url ? (
         <Image
           source={{ uri: props.image.url }}
-          resizeMode={'contain'}
+          resizeMode="contain"
           style={styles.image}
-          onLoadStart={handleLoadingStart}
-          onLoad={handleLoadingEnd}
-          onError={handleOnError}
+          onLoadStart={handleOnLoadStart}
+          onLoad={handleOnLoad}
+          onError={handleOnLoad}
         />
       ) : (
         <View style={styles.image} />
       )}
 
-      <View style={styles.loaderWrapper}>{isLoadingContent && <ActivityIndicator size={'small'} />}</View>
+      <View style={styles.loaderWrapper}>{isLoadingContent && <ActivityIndicator size="small" />}</View>
     </View>
   ) : (
-    <View>
-      <ActivityIndicator size="small" />
-    </View>
+    <ActivityIndicator size="small" />
   );
 };
 
 const styles = StyleSheet.create({
-  containerImage: {
+  imageContainer: {
     width: '100%',
     overflow: 'hidden',
-    alignItems: undefined, // переопределяем стили в ImageWithLoader,
-    justifyContent: undefined, // переопределяем стили в ImageWithLoader
   },
   image: {
     width: '100%',
