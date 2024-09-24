@@ -23,9 +23,9 @@ import Animated, { AnimatedProps, SharedValue } from 'react-native-reanimated';
 
 import { CloseButton } from './components/CloseButton';
 import { ImageItem } from './components/ImageItem';
+import ImageViewHelper from './helpers/ImageViewHelper';
 import OrientationHelper from './helpers/OrientationHelper';
 import { useAnimatedImageView } from './hooks/useAnimatedImageView';
-import { ImageViewingColors } from './settings/ImageViewingColors';
 import { CloseButtonType, IImageModel, ImageViewingInstance, ImageViewingProps, Nullable } from './types';
 
 // For iOS, you need to use the FlatList from react-native.
@@ -41,6 +41,8 @@ export const ImageViewing = forwardRef<ImageViewingInstance, ImageViewingProps>(
 
   // In order for iOS to work together with scrolling, Gesture.Native() is needed in the GestureDetector where the FlatList is located.
   const flatListNative = useRef(Gesture.Native());
+
+  const imageViewingColors = useMemo(() => ImageViewHelper.getImageViewColors(props.colors), [props.colors]);
 
   const [isLoading, setLoading] = useState<boolean>(false);
   const [orientation, setOrientation] = useState<OrientationType>(OrientationType['PORTRAIT']);
@@ -200,6 +202,7 @@ export const ImageViewing = forwardRef<ImageViewingInstance, ImageViewingProps>(
         onZoomEnd={controller.onZoomEnd}
         onZoomBegin={controller.onZoomBegin}
         onToggleOverlay={handleToggleOverlay}
+        config={props.config}
       />
     );
   };
@@ -220,19 +223,21 @@ export const ImageViewing = forwardRef<ImageViewingInstance, ImageViewingProps>(
   }, []);
 
   return (
-    <Animated.View style={[styles.container, controller.modalStyle]}>
+    <Animated.View
+      style={[styles.container, { backgroundColor: imageViewingColors.backgroundModalColor }, controller.modalStyle]}
+    >
       <GestureHandlerRootView style={styles.flex}>
         {isLoading && (
-          <View style={styles.containerLoader}>
-            <ActivityIndicator size={'large'} />
+          <View style={[styles.containerLoader, { backgroundColor: imageViewingColors.backgroundModalColor }]}>
+            <ActivityIndicator size="large" />
           </View>
         )}
         <Animated.View style={[styles.flex, { paddingTop: Platform.OS === 'ios' ? 0 : props.insets?.top ?? 0 }]}>
           <Animated.View style={[styles.containerHeader, headerStyle]}>
             <View style={styles.containerCloseButton}>
               <CloseButton
-                bgColor={ImageViewingColors.closeButtonBackground}
-                type={CloseButtonType.light}
+                bgColor={imageViewingColors.closeButtonBackground}
+                type={props.closeButtonType ?? CloseButtonType.light}
                 containerStyle={styles.closeButton}
                 onPress={handleCloseModal}
               />
@@ -262,9 +267,16 @@ export const ImageViewing = forwardRef<ImageViewingInstance, ImageViewingProps>(
             // Rendering functions
             renderItem,
           })}
-          <Animated.View style={[controller.footerStyle, styles.footerContainer, footerStyle]}>
+          <Animated.View
+            style={[
+              controller.footerStyle,
+              styles.footerContainer,
+              { backgroundColor: imageViewingColors.footerModalOverlayColor },
+              footerStyle,
+            ]}
+          >
             <Animated.View style={controller.rotateStyle}>
-              <Text style={styles.pageText}>
+              <Text style={[styles.pageText, { color: imageViewingColors.textColor }]}>
                 {currentIndex + 1}/{props.images.length}
               </Text>
             </Animated.View>
@@ -288,7 +300,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: ImageViewingColors.backgroundModalColor,
   },
   containerLoader: {
     position: 'absolute',
@@ -299,7 +310,6 @@ const styles = StyleSheet.create({
     zIndex: 100,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: ImageViewingColors.backgroundModalColor,
   },
   containerHeader: {
     position: 'absolute',
@@ -328,7 +338,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: ImageViewingColors.footerModalOverlayColor,
   },
   landscapeLeftFooter: {
     top: 0,
@@ -353,6 +362,5 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     fontWeight: '400',
     letterSpacing: 0.5,
-    color: ImageViewingColors.textColor,
   },
 });

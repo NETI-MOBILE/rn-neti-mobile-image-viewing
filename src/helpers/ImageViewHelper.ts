@@ -1,6 +1,8 @@
 import { Image } from 'react-native';
 
-import { IImageModel, IImageSize, Nullable } from '../types';
+import { ImageViewingColors } from '../settings/ImageViewingColors';
+import { ImageViewingConfig } from '../settings/ImageViewingConfig';
+import { IColors, IConfig, IImageModel, IImageSize, Nullable } from '../types';
 
 export default class ImageViewHelper {
   static getImageAspect = async (image: IImageModel) => {
@@ -46,5 +48,22 @@ export default class ImageViewHelper {
     }
 
     return Number((size.width / size.height).toFixed(2));
+  };
+
+  static getImageViewConfig = (config?: IConfig) => {
+    if (config) {
+      const swipeConfig = Object.assign({}, ImageViewingConfig.swipeAnimation, config.swipeAnimation ?? {});
+      return Object.assign({}, ImageViewingConfig, config, { swipeAnimation: swipeConfig });
+    }
+
+    return ImageViewingConfig;
+  };
+
+  static getImageViewColors = (colors?: IColors) => {
+    if (colors) {
+      return Object.assign({}, ImageViewingColors, colors);
+    }
+
+    return ImageViewingColors;
   };
 }

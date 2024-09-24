@@ -1,3 +1,5 @@
+import { ColorValue } from 'react-native';
+
 export type Nullable<T> = null | T;
 
 export interface IImageModel {
@@ -15,6 +17,32 @@ export interface IEdgeInsets {
   right: number;
   bottom: number;
   left: number;
+}
+
+export interface ISwipeAnimation {
+  damping?: number;
+  stiffness?: number;
+}
+
+export interface IConfig {
+  minScale?: number;
+  maxScale?: number;
+  decreaseZoomSpeed?: number;
+  zoomInDuration?: number;
+  zoomOutDuration?: number;
+
+  swipeWidthFactor?: number;
+  swipeHeightFactor?: number;
+  swipeAnimation?: ISwipeAnimation;
+}
+
+export interface IColors {
+  backgroundModalColor: ColorValue; // Background color for the modal window (with images)
+  closeButtonBackground: ColorValue; // Background color for the close button
+  footerModalOverlayColor: ColorValue; // Background color for footer
+  outline: ColorValue;
+  textColor: ColorValue; // The color of the text (footer)
+  white: ColorValue;
 }
 
 export interface ImageViewingInstance {
@@ -58,8 +86,6 @@ export type ImageViewingProps = {
   /**
    * Data array images. The sizes parameter is not required, but is desirable for calculating aspect ratio without calling Image.getSize()
    *
-   * @requires
-   *
    * @example
    * [
    *  { url: 'https:\\*', sizes: { width: 1280, height: 960 } }
@@ -98,4 +124,20 @@ export type ImageViewingProps = {
    * @param index
    */
   onSnapViewingItem?: (index: number) => void;
+
+  /**
+   * Config for custom zoom and swipe settings
+   */
+  config?: IConfig;
+
+  /**
+   * Colors config to customize the current colors
+   */
+  colors?: IColors;
+
+  /**
+   * Close button type to customize close button color value (light/dark).
+   * Light by default.
+   */
+  closeButtonType?: CloseButtonType;
 };

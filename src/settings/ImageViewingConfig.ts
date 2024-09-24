@@ -1,6 +1,8 @@
 import { Platform } from 'react-native';
 
-export const ImageViewingConfig = {
+import { IConfig } from '../types';
+
+export const ImageViewingConfig: IConfig = {
   minScale: 1,
   maxScale: 3,
 

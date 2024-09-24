@@ -6,7 +6,7 @@ import Animated from 'react-native-reanimated';
 
 import { IAnimatedImageView } from '../hooks/useAnimatedImageView';
 import { useGestureImageView } from '../hooks/useGestureImageView';
-import { IImageModel } from '../types';
+import { IConfig, IImageModel } from '../types';
 import { ImageWithAspect } from './ImageWithAspect';
 
 interface IImageItemProps {
@@ -22,6 +22,8 @@ interface IImageItemProps {
 
   isZoomEnabled?: boolean;
   isSwipeEnabled?: boolean;
+
+  config?: IConfig;
 }
 
 export const ImageItem: FC<IImageItemProps> = props => {
@@ -54,6 +56,7 @@ export const ImageItem: FC<IImageItemProps> = props => {
     onZoomBegin: props.onZoomBegin,
     onCloseModal: handleClose,
     onToggleOverlay: props.onToggleOverlay,
+    config: props.config,
   });
 
   return (
