@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+//@ts-expect-error we don't have such package, this is a usage example case
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ImageViewing, ImageViewingInstance } from 'rn-neti-mobile-image-viewing';
 

@@ -13,11 +13,11 @@ import {
   withSpring,
   withTiming,
 } from 'react-native-reanimated';
+import { DefaultStyle } from 'react-native-reanimated/lib/typescript/reanimated2/hook/commonTypes';
 
 import ImageViewHelper from '../helpers/ImageViewHelper';
 import OrientationHelper from '../helpers/OrientationHelper';
 import { IConfig } from '../types';
-import {DefaultStyle} from "react-native-reanimated/lib/typescript/reanimated2/hook/commonTypes";
 
 interface IProps {
   width: number;
@@ -90,14 +90,14 @@ export const useGestureImageView = ({
       .onUpdate(event => {
         // We make sure that there is a two-finger tap
         if (event.numberOfPointers === 2) {
-          const calculateScale = baseScale.value * (event.scale * imageViewingConfig.decreaseZoomSpeed);
+          const calculateScale = baseScale.value * (event.scale * imageViewingConfig.decreaseZoomSpeed!);
 
-          if (calculateScale < imageViewingConfig.minScale) {
+          if (calculateScale < imageViewingConfig.minScale!) {
             scale.value = imageViewingConfig.minScale!;
-          } else if (calculateScale >= imageViewingConfig.maxScale) {
+          } else if (calculateScale >= imageViewingConfig.maxScale!) {
             scale.value = imageViewingConfig.maxScale!;
           } else {
-            scale.value = baseScale.value * (event.scale * imageViewingConfig.decreaseZoomSpeed);
+            scale.value = baseScale.value * (event.scale * imageViewingConfig.decreaseZoomSpeed!);
           }
 
           // Getting the center's coordinates
@@ -144,7 +144,7 @@ export const useGestureImageView = ({
         'worklet';
 
         // If scale is equal to 1, we reset translation.
-        if (scale.value <= imageViewingConfig.minScale) {
+        if (scale.value <= imageViewingConfig.minScale!) {
           translationX.value = 0;
           translationY.value = 0;
           baseTranslationX.value = 0;
@@ -168,7 +168,7 @@ export const useGestureImageView = ({
       })
       .onUpdate(event => {
         // We allow movement only if scale > 1 and only one finger pressed.
-        if (event.numberOfPointers === 1 && scale.value > imageViewingConfig.minScale) {
+        if (event.numberOfPointers === 1 && scale.value > imageViewingConfig.minScale!) {
           // We calculate the dimensions to which we can move. It is necessary in order not to go beyond the boundaries of the screen.
           const maxXOffset = (props.width * scale.value - props.width) / 2;
           const maxYOffset = (props.height * scale.value - props.height) / 2;
@@ -212,12 +212,12 @@ export const useGestureImageView = ({
         'worklet';
 
         // If the scale is greater than 1, then we prohibit closing by swiping.
-        if (scale.value > imageViewingConfig.minScale) {
+        if (scale.value > imageViewingConfig.minScale!) {
           return;
         }
 
-        const maxYOffset = props.height / imageViewingConfig.swipeHeightFactor;
-        const maxXOffset = props.width / imageViewingConfig.swipeWidthFactor;
+        const maxYOffset = props.height / imageViewingConfig.swipeHeightFactor!;
+        const maxXOffset = props.width / imageViewingConfig.swipeWidthFactor!;
 
         // If the screen orientation is portrait, then we allow to swipe vertically, otherwise a horizontal swipe is used.
         if (isPortraitOrientation) {
@@ -228,7 +228,7 @@ export const useGestureImageView = ({
       })
       .onTouchesDown((event, state) => {
         // We forbid the gesture if 2 fingers are pressed or the scale is greater than 1.
-        if (event.numberOfTouches === 2 || scale.value > imageViewingConfig.minScale) {
+        if (event.numberOfTouches === 2 || scale.value > imageViewingConfig.minScale!) {
           state.fail();
           return;
         }
@@ -263,8 +263,8 @@ export const useGestureImageView = ({
       .onEnd(() => {
         'worklet';
         // Setting the offset for swipe horizontally and vertically.
-        const maxYOffset = props.height / imageViewingConfig.swipeHeightFactor;
-        const maxXOffset = props.width / imageViewingConfig.swipeWidthFactor;
+        const maxYOffset = props.height / imageViewingConfig.swipeHeightFactor!;
+        const maxXOffset = props.width / imageViewingConfig.swipeWidthFactor!;
 
         if (
           position.value === maxYOffset ||
@@ -299,7 +299,7 @@ export const useGestureImageView = ({
       .onStart(event => {
         'worklet';
 
-        if (scale.value === imageViewingConfig.minScale) {
+        if (scale.value === imageViewingConfig.minScale!) {
           scale.value = withTiming(imageViewingConfig.maxScale!, { duration: imageViewingConfig.zoomInDuration });
           baseScale.value = imageViewingConfig.maxScale!;
 
@@ -320,7 +320,7 @@ export const useGestureImageView = ({
 
           baseTranslationX.value = translateX;
           baseTranslationY.value = translateY;
-        } else if (scale.value > imageViewingConfig.minScale) {
+        } else if (scale.value > imageViewingConfig.minScale!) {
           scale.value = withTiming(imageViewingConfig.minScale!, { duration: imageViewingConfig.zoomOutDuration });
           baseScale.value = imageViewingConfig.minScale!;
           translationY.value = withTiming(0, { duration: imageViewingConfig.zoomOutDuration });
