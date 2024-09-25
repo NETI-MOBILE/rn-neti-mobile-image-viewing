@@ -15,10 +15,8 @@ yarn add rn-neti-mobile-image-viewing
 
 ## Peer dependencies
 
-For the package to work, you must install [react-native-orientation-locker](https://github.com/wonday/react-native-orientation-locker) ^1.7.0.
-
-Optionally, you can use react-native-safe-area-context, if you want to consider screen safe zones (insets),
-when working with photos and zoom. In case you don't need them, EdgeInsets (top/bottom/left/right) will be equal to 0.
+Optionally, you can install react-native-safe-area-context, if you want to consider screen safe zones (insets),
+when working with photos and zoom. In another case EdgeInsets (top/bottom/left/right) will be equal to 0.
 
 ## Usage
 You can check common usage [example](./example/Sample.tsx)
@@ -33,13 +31,18 @@ export default function App() {
 
 ## Props
 
-- `ref` - ImageViewingInstance to show or hide carousel with images. It also includes snapItem feature with scroll to item by index.
-- `images` - Image data array.
-- `insets` - Screen insets to consider device safe zones.
-- `isZoomEnabled` - Parameter to enable/disable zoom support. Enabled by default.
-- `isSwipeEnabled` - Parameter to enable/disable swipe support. Enabled by default.
-- `isOrientationEnabled` - Parameter to enable/disable orientation support. Disabled by default.
-- `onSnapViewingItem` - Callback. Gets called when navigating to an item.
+| Name                 | Type                            | Description                                                                                                                         |
+|----------------------|---------------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
+| images               | IImageModel[]                   | Image data array                                                                                                                    |
+| ref                  | React.Ref<ImageViewingInstance> | Optional. ImageViewingInstance to show or hide carousel with images. It also includes snapItem feature with scroll to item by index |
+| insets               | IEdgeInsets                     | Optional. Screen insets to consider device safe zones                                                                               |
+| isZoomEnabled        | boolean                         | Optional. Parameter to enable/disable zoom support. Enabled by default                                                              |                                                                                                    |
+| isSwipeEnabled       | boolean                         | Optional. Parameter to enable/disable swipe support. Enabled by default                                                             |                                                                                                    |
+| isOrientationEnabled | boolean                         | Optional. Parameter to enable/disable orientation support. Disabled by default                                                      |                                                                                                    |
+| onSnapViewingItem    | (index: number) => void         | Callback. Gets called when navigating to an item                                                                                    |                                                                                                    |
+| config               | IConfig                         | Optional. Config for custom zoom and swipe settings                                                                                 |                                                                                                    |
+| colors               | IColors                         | Optional. Colors config to customize the current colors                                                                             |                                                                                                    |
+| closeButtonType      | CloseButtonType                 | Optional. Close button type to customize close button color value (light/dark). Light by default                                    |                                                                                                    |
 
 ## Contributing
 
