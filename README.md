@@ -19,13 +19,13 @@ Optionally, you can install react-native-safe-area-context, if you want to consi
 when working with photos and zoom. In another case EdgeInsets (top/bottom/left/right) will be equal to 0.
 
 ## Usage
-You can check common usage [example](./example/Sample.tsx)
+You can check common usage via console `yarn example start` or by link [example](./example/src/components/Content.tsx)
 
   ```jsx
 import { ImageViewing, ImageViewingInstance } from 'rn-neti-mobile-image-viewing';
 
 export default function App() {
-  return <ImageViewing ref={imageViewingRef} images={images} insets={insets} />;
+  return <ImageViewing ref={imageViewingRef} images={images} insets={insets} isOrientationEnabled />;
 }
 ```
 

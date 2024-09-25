@@ -1,0 +1,35 @@
+{
+  "expo": {
+    "name": "rn-neti-mobile-image-viewing-example",
+    "slug": "rn-neti-mobile-image-viewing-example",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "rnnetimobileimageviewing.example"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "rnnetimobileimageviewing.example"
+    },
+    "description": "Example app for rn-neti-mobile-image-viewing",
+    "privacy": "public",
+    "platforms": [
+      "ios",
+      "android"
+    ],
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}

@@ -29,6 +29,7 @@
     "clean": "del-cli lib",
     "prepare": "bob build",
     "release": "release-it",
+    "example": "yarn workspace rn-neti-mobile-image-viewing-example",
     "postinstall": "husky install",
     "pre-commit": "tsc --pretty && eslint ."
   },

@@ -1,10 +1,9 @@
-import React, { useRef } from 'react';
+import React, { FC, useRef } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-//@ts-expect-error we don't have such package, this is a usage example case
-import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ImageViewing, ImageViewingInstance } from 'rn-neti-mobile-image-viewing';
 
-export default function Sample() {
+export const Content: FC = () => {
   const insets = useSafeAreaInsets();
 
   const imageViewingRef = useRef<ImageViewingInstance | null>(null);
@@ -20,21 +19,16 @@ export default function Sample() {
   };
 
   return (
-    <SafeAreaProvider style={styles.provider}>
-      <View style={styles.container}>
-        <TouchableOpacity onPress={handleOnOpenPress} style={styles.buttonContainer}>
-          <Text style={styles.buttonText}>Open</Text>
-        </TouchableOpacity>
-        <ImageViewing ref={imageViewingRef} images={images} insets={insets} isOrientationEnabled />
-      </View>
-    </SafeAreaProvider>
+    <View style={styles.container}>
+      <TouchableOpacity onPress={handleOnOpenPress} style={styles.buttonContainer}>
+        <Text style={styles.buttonText}>Open</Text>
+      </TouchableOpacity>
+      <ImageViewing ref={imageViewingRef} images={images} insets={insets} isOrientationEnabled />
+    </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  provider: {
-    flex: 1,
-  },
   container: {
     flex: 1,
     alignItems: 'center',

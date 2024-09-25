@@ -1,9 +1,8 @@
 import React, { useRef } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-//@ts-expect-error we don't have such package, this is a usage example case
-import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ImageViewing } from 'rn-neti-mobile-image-viewing';
-export default function Sample() {
+export const Content = () => {
     const insets = useSafeAreaInsets();
     const imageViewingRef = useRef(null);
     const images = [
@@ -14,16 +13,12 @@ export default function Sample() {
     const handleOnOpenPress = () => {
         imageViewingRef.current?.show();
     };
-    return (React.createElement(SafeAreaProvider, { style: styles.provider },
-        React.createElement(View, { style: styles.container },
-            React.createElement(TouchableOpacity, { onPress: handleOnOpenPress, style: styles.buttonContainer },
-                React.createElement(Text, { style: styles.buttonText }, "Open")),
-            React.createElement(ImageViewing, { ref: imageViewingRef, images: images, insets: insets, isOrientationEnabled: true }))));
-}
+    return (React.createElement(View, { style: styles.container },
+        React.createElement(TouchableOpacity, { onPress: handleOnOpenPress, style: styles.buttonContainer },
+            React.createElement(Text, { style: styles.buttonText }, "Open")),
+        React.createElement(ImageViewing, { ref: imageViewingRef, images: images, insets: insets, isOrientationEnabled: true })));
+};
 const styles = StyleSheet.create({
-    provider: {
-        flex: 1,
-    },
     container: {
         flex: 1,
         alignItems: 'center',
