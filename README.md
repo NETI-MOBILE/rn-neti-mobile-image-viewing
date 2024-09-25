@@ -2,6 +2,8 @@
 
 React-Native library for image viewing with zoom and orientation change.
 
+https://github.com/user-attachments/assets/1b89f85f-4bdc-4219-abb2-d70f3e92746a
+
 ## Installation
 
   ```sh
