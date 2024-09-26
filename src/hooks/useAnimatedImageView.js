@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { StatusBar } from 'react-native';
 import { OrientationType } from 'react-native-orientation-locker';
 import { interpolate, useAnimatedProps, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
@@ -8,6 +8,7 @@ export const useAnimatedImageView = (props) => {
     const opacity = useSharedValue(0);
     const isShowOverlay = useSharedValue(1);
     const scrollEnabled = useSharedValue(true);
+    const isPortraitOrientation = useMemo(() => OrientationHelper.isPortraitOrientation(props.orientation), [props.orientation]);
     const [isShowImage, setShowImage] = useState(false);
     const modalStyle = useAnimatedStyle(() => {
         return {
@@ -21,11 +22,7 @@ export const useAnimatedImageView = (props) => {
         };
     });
     const footerStyle = useAnimatedStyle(() => {
-        if (props.orientation === OrientationType['PORTRAIT'] ||
-            props.orientation === OrientationType['PORTRAIT-UPSIDEDOWN'] ||
-            props.orientation === OrientationType['UNKNOWN'] ||
-            props.orientation === OrientationType['FACE-DOWN'] ||
-            props.orientation === OrientationType['FACE-UP']) {
+        if (isPortraitOrientation) {
             return {
                 transform: [{ translateY: interpolate(isShowOverlay.value, [0, 1], [800, 0 - (props.insets?.bottom ?? 0)]) }],
             };

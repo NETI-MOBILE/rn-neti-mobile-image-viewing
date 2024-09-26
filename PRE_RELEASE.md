@@ -19,9 +19,8 @@ app.json, при помощи `npx expo run:ios` и `npx expo run:android` из 
 - src/components/Content.tsx - rn-neti-mobile-image-viewing
 
 # Что необходимо сделать до релиза
-- Заполнить в Code of conduct - INSERT CONTACT METHOD заменить на актуальный метод связи (соглашение по общению внутри
-сообщества, метод связи, чтобы указать на нарушение).
-- На android повороты не доворачивают изображение (физ android 11).
+- Заполнить в CODE_OF_CONDUCT.md - INSERT CONTACT METHOD заменить на актуальный метод связи (соглашение по общению
+внутри сообщества, метод связи, чтобы указать на нарушение).
 - Удалить этот файл (PRE_RELEASE.md) перед релизом
 
 # Предложения

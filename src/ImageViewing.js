@@ -44,6 +44,10 @@ export const ImageViewing = forwardRef((props, ref) => {
         return { top: props.insets?.top ?? 0, left: 0 };
     }, [orientation]);
     useEffect(() => {
+        // Current package version works correctly only with lockToPortrait call
+        Orientation.lockToPortrait();
+    }, []);
+    useEffect(() => {
         if (controller.isShowImage) {
             return;
         }
@@ -89,9 +93,12 @@ export const ImageViewing = forwardRef((props, ref) => {
             else {
                 gestureFlatListRef.current?.scrollToIndex({ index: currentIndex, animated: false });
             }
-            setLoading(false);
+            const loaderTimeout = setTimeout(() => {
+                setLoading(false);
+                clearTimeout(loaderTimeout);
+            }, 300);
             clearTimeout(timeout);
-        }, 600);
+        }, 300);
     });
     // Imperative handlers
     useImperativeHandle(ref, () => ({

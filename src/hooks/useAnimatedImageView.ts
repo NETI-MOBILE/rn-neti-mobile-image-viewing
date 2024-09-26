@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { StatusBar, StyleProp, ViewStyle } from 'react-native';
 import { OrientationType } from 'react-native-orientation-locker';
 import { interpolate, useAnimatedProps, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import { DefaultStyle } from 'react-native-reanimated/lib/typescript/reanimated2/hook/commonTypes';
 
 import OrientationHelper from '../helpers/OrientationHelper';
 import { IEdgeInsets } from '../types';
@@ -32,6 +33,11 @@ export const useAnimatedImageView = (props: IProps): IAnimatedImageView => {
   const isShowOverlay = useSharedValue<number>(1);
   const scrollEnabled = useSharedValue(true);
 
+  const isPortraitOrientation = useMemo(
+    () => OrientationHelper.isPortraitOrientation(props.orientation),
+    [props.orientation],
+  );
+
   const [isShowImage, setShowImage] = useState<boolean>(false);
 
   const modalStyle = useAnimatedStyle(() => {
@@ -44,20 +50,14 @@ export const useAnimatedImageView = (props: IProps): IAnimatedImageView => {
   const rotateStyle = useAnimatedStyle(() => {
     return {
       transform: [{ rotate: `${interpolate(rotate.value, [-1, 0, 1], [90, 0, -90])}deg` }],
-    };
+    } as DefaultStyle;
   });
 
   const footerStyle = useAnimatedStyle(() => {
-    if (
-      props.orientation === OrientationType['PORTRAIT'] ||
-      props.orientation === OrientationType['PORTRAIT-UPSIDEDOWN'] ||
-      props.orientation === OrientationType['UNKNOWN'] ||
-      props.orientation === OrientationType['FACE-DOWN'] ||
-      props.orientation === OrientationType['FACE-UP']
-    ) {
+    if (isPortraitOrientation) {
       return {
         transform: [{ translateY: interpolate(isShowOverlay.value, [0, 1], [800, 0 - (props.insets?.bottom ?? 0)]) }],
-      };
+      } as DefaultStyle;
     }
 
     return {
@@ -70,7 +70,7 @@ export const useAnimatedImageView = (props: IProps): IAnimatedImageView => {
           ),
         },
       ],
-    };
+    } as DefaultStyle;
   });
 
   const animatedProps = useAnimatedProps(() => {
