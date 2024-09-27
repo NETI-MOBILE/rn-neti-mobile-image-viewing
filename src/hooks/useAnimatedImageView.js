@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { StatusBar } from 'react-native';
 import { OrientationType } from 'react-native-orientation-locker';
-import { interpolate, useAnimatedProps, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import { interpolate, useAnimatedProps, useAnimatedStyle, useSharedValue, withTiming, } from 'react-native-reanimated';
 import OrientationHelper from '../helpers/OrientationHelper';
 export const useAnimatedImageView = (props) => {
     const rotate = useSharedValue(0);
@@ -55,6 +55,9 @@ export const useAnimatedImageView = (props) => {
         opacity.value = withTiming(0);
         setShowImage(false);
         StatusBar.setBarStyle('dark-content');
+        if (!isShowOverlay.value) {
+            onToggleOverlay();
+        }
     };
     const onChangeOrientation = (orientation) => {
         if (OrientationHelper.isPortraitOrientation(orientation)) {
@@ -76,6 +79,7 @@ export const useAnimatedImageView = (props) => {
         }
     };
     return {
+        isShowOverlay,
         isShowImage,
         modalStyle,
         rotateStyle,

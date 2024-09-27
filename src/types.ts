@@ -86,6 +86,8 @@ export type ImageViewingProps = {
   /**
    * Data array images. The sizes parameter is not required, but is desirable for calculating aspect ratio without calling Image.getSize()
    *
+   * @requires
+   *
    * @example
    * [
    *  { url: 'https:\\*', sizes: { width: 1280, height: 960 } }
@@ -140,4 +142,10 @@ export type ImageViewingProps = {
    * Light by default.
    */
   closeButtonType?: CloseButtonType;
+
+  /**
+   * Parameter to hide overlay on zoom
+   * Disabled by default.
+   */
+  hideOverlayOnZoom?: boolean;
 };

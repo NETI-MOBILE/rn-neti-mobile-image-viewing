@@ -1,7 +1,14 @@
 import { useMemo, useState } from 'react';
 import { StatusBar, StyleProp, ViewStyle } from 'react-native';
 import { OrientationType } from 'react-native-orientation-locker';
-import { interpolate, useAnimatedProps, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import {
+  interpolate,
+  SharedValue,
+  useAnimatedProps,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
 import { DefaultStyle } from 'react-native-reanimated/lib/typescript/reanimated2/hook/commonTypes';
 
 import OrientationHelper from '../helpers/OrientationHelper';
@@ -9,6 +16,7 @@ import { IEdgeInsets } from '../types';
 
 export interface IAnimatedImageView {
   isShowImage: boolean;
+  isShowOverlay: SharedValue<number>;
   modalStyle: StyleProp<ViewStyle>;
   rotateStyle: StyleProp<ViewStyle>;
   footerStyle: StyleProp<ViewStyle>;
@@ -97,6 +105,10 @@ export const useAnimatedImageView = (props: IProps): IAnimatedImageView => {
     opacity.value = withTiming(0);
     setShowImage(false);
     StatusBar.setBarStyle('dark-content');
+
+    if (!isShowOverlay.value) {
+      onToggleOverlay();
+    }
   };
 
   const onChangeOrientation = (orientation: OrientationType) => {
@@ -118,6 +130,7 @@ export const useAnimatedImageView = (props: IProps): IAnimatedImageView => {
   };
 
   return {
+    isShowOverlay,
     isShowImage,
     modalStyle,
     rotateStyle,

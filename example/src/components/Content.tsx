@@ -23,7 +23,7 @@ export const Content: FC = () => {
       <TouchableOpacity onPress={handleOnOpenPress} style={styles.buttonContainer}>
         <Text style={styles.buttonText}>Open</Text>
       </TouchableOpacity>
-      <ImageViewing ref={imageViewingRef} images={images} insets={insets} isOrientationEnabled />
+      <ImageViewing ref={imageViewingRef} images={images} insets={insets} isOrientationEnabled hideOverlayOnZoom />
     </View>
   );
 };

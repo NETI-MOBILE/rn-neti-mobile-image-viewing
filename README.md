@@ -43,6 +43,7 @@ export default function App() {
 | config               | IConfig                         | Optional. Config for custom zoom and swipe settings                                                                                 |                                                                                                    |
 | colors               | IColors                         | Optional. Colors config to customize the current colors                                                                             |                                                                                                    |
 | closeButtonType      | CloseButtonType                 | Optional. Close button type to customize close button color value (light/dark). Light by default                                    |                                                                                                    |
+| hideOverlayOnZoom    | boolean                         | Optional. Parameter to hide overlay on zoom. Disabled by default                                                                    |                                                                                                    |
 
 ## Contributing
 

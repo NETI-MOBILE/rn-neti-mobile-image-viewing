@@ -24,6 +24,10 @@ export const ImageViewing = forwardRef((props, ref) => {
     const [isLoading, setLoading] = useState(false);
     const [orientation, setOrientation] = useState(OrientationType['PORTRAIT']);
     const [currentIndex, setCurrentIndex] = useState(0);
+    useEffect(() => {
+        // Current package version works correctly only with lockToPortrait call
+        Orientation.lockToPortrait();
+    }, []);
     const controller = useAnimatedImageView({ orientation, insets: props.insets });
     const footerStyle = useMemo(() => {
         if (OrientationHelper.isRightLandscapeOrientation(orientation)) {
@@ -44,10 +48,6 @@ export const ImageViewing = forwardRef((props, ref) => {
         return { top: props.insets?.top ?? 0, left: 0 };
     }, [orientation]);
     useEffect(() => {
-        // Current package version works correctly only with lockToPortrait call
-        Orientation.lockToPortrait();
-    }, []);
-    useEffect(() => {
         if (controller.isShowImage) {
             return;
         }
@@ -65,7 +65,6 @@ export const ImageViewing = forwardRef((props, ref) => {
         controller.onChangeOrientation(OrientationType['PORTRAIT']);
         setTimeout(() => {
             setOrientation(OrientationType['PORTRAIT']);
-            Orientation.lockToPortrait();
         }, 501);
     }, []);
     // To close the image view when clicking on the system button.
@@ -141,7 +140,7 @@ export const ImageViewing = forwardRef((props, ref) => {
     }, []);
     // Renders
     const renderItem = ({ item }) => {
-        return (React.createElement(ImageItem, { image: item, controller: controller, orientation: orientation, gesturePanRef: flatListNative.current, isZoomEnabled: props.isZoomEnabled, isSwipeEnabled: props.isSwipeEnabled, onClose: handleCloseModal, onZoomEnd: controller.onZoomEnd, onZoomBegin: controller.onZoomBegin, onToggleOverlay: handleToggleOverlay, config: props.config }));
+        return (React.createElement(ImageItem, { image: item, controller: controller, orientation: orientation, gesturePanRef: flatListNative.current, isZoomEnabled: props.isZoomEnabled, isSwipeEnabled: props.isSwipeEnabled, onClose: handleCloseModal, onZoomEnd: controller.onZoomEnd, onZoomBegin: controller.onZoomBegin, onToggleOverlay: handleToggleOverlay, hideOverlayOnZoom: props.hideOverlayOnZoom, config: props.config }));
     };
     // Renders
     const renderList = useCallback((props) => {

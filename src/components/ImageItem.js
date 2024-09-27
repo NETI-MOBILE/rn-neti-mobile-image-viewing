@@ -30,6 +30,8 @@ export const ImageItem = props => {
         onZoomBegin: props.onZoomBegin,
         onCloseModal: handleClose,
         onToggleOverlay: props.onToggleOverlay,
+        controller: props.controller,
+        hideOverlayOnZoom: props.hideOverlayOnZoom,
         config: props.config,
     });
     return (React.createElement(View, { style: { width, height } },

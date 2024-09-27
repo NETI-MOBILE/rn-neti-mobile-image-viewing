@@ -48,6 +48,11 @@ export const ImageViewing = forwardRef<ImageViewingInstance, ImageViewingProps>(
   const [orientation, setOrientation] = useState<OrientationType>(OrientationType['PORTRAIT']);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
 
+  useEffect(() => {
+    // Current package version works correctly only with lockToPortrait call
+    Orientation.lockToPortrait();
+  }, []);
+
   const controller = useAnimatedImageView({ orientation, insets: props.insets });
 
   const footerStyle = useMemo(() => {
@@ -75,11 +80,6 @@ export const ImageViewing = forwardRef<ImageViewingInstance, ImageViewingProps>(
   }, [orientation]);
 
   useEffect(() => {
-    // Current package version works correctly only with lockToPortrait call
-    Orientation.lockToPortrait();
-  }, []);
-
-  useEffect(() => {
     if (controller.isShowImage) {
       return;
     }
@@ -99,7 +99,6 @@ export const ImageViewing = forwardRef<ImageViewingInstance, ImageViewingProps>(
 
     setTimeout(() => {
       setOrientation(OrientationType['PORTRAIT']);
-      Orientation.lockToPortrait();
     }, 501);
   }, []);
 
@@ -211,6 +210,7 @@ export const ImageViewing = forwardRef<ImageViewingInstance, ImageViewingProps>(
         onZoomEnd={controller.onZoomEnd}
         onZoomBegin={controller.onZoomBegin}
         onToggleOverlay={handleToggleOverlay}
+        hideOverlayOnZoom={props.hideOverlayOnZoom}
         config={props.config}
       />
     );

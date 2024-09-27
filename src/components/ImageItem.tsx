@@ -19,6 +19,7 @@ interface IImageItemProps {
   onZoomEnd: () => void;
   onZoomBegin: () => void;
   onToggleOverlay: () => void;
+  hideOverlayOnZoom?: boolean;
 
   isZoomEnabled?: boolean;
   isSwipeEnabled?: boolean;
@@ -56,6 +57,8 @@ export const ImageItem: FC<IImageItemProps> = props => {
     onZoomBegin: props.onZoomBegin,
     onCloseModal: handleClose,
     onToggleOverlay: props.onToggleOverlay,
+    controller: props.controller,
+    hideOverlayOnZoom: props.hideOverlayOnZoom,
     config: props.config,
   });
 

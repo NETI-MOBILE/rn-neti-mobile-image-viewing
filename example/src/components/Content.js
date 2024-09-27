@@ -16,7 +16,7 @@ export const Content = () => {
     return (React.createElement(View, { style: styles.container },
         React.createElement(TouchableOpacity, { onPress: handleOnOpenPress, style: styles.buttonContainer },
             React.createElement(Text, { style: styles.buttonText }, "Open")),
-        React.createElement(ImageViewing, { ref: imageViewingRef, images: images, insets: insets, isOrientationEnabled: true })));
+        React.createElement(ImageViewing, { ref: imageViewingRef, images: images, insets: insets, isOrientationEnabled: true, hideOverlayOnZoom: true })));
 };
 const styles = StyleSheet.create({
     container: {

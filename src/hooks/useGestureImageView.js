@@ -6,6 +6,8 @@ import ImageViewHelper from '../helpers/ImageViewHelper';
 import OrientationHelper from '../helpers/OrientationHelper';
 export const useGestureImageView = ({ isSwipeEnabled = true, isZoomEnabled = true, ...props }) => {
     const isZoomed = useSharedValue(false);
+    // this value is needed to understand, whether we need to restore overlay on zoom end or not
+    const isShowOverlay = useSharedValue(props.controller?.isShowOverlay.value ?? 1);
     const isPortraitOrientation = useMemo(() => OrientationHelper.isPortraitOrientation(props.orientation), [props.orientation]);
     const imageViewingConfig = useMemo(() => ImageViewHelper.getImageViewConfig(props.config), [props.config]);
     // Values for enlarging the image
@@ -23,13 +25,24 @@ export const useGestureImageView = ({ isSwipeEnabled = true, isZoomEnabled = tru
     const isSwipeHorizontal = useSharedValue(0);
     const initialSwipeLocation = useSharedValue({ x: 0, y: 0 });
     useDerivedValue(() => {
+        if (!props.controller?.isShowImage) {
+            isShowOverlay.value = 1;
+        }
+    }, [props.controller?.isShowImage]);
+    useDerivedValue(() => {
         if (scale.value > 1 && !isZoomed.value) {
             isZoomed.value = true;
             runOnJS(props.onZoomBegin)();
+            if (props.hideOverlayOnZoom && props.controller?.isShowOverlay.value) {
+                runOnJS(props.onToggleOverlay)();
+            }
         }
         else if (scale.value === 1 && isZoomed.value) {
             isZoomed.value = false;
             runOnJS(props.onZoomEnd)();
+            if (props.hideOverlayOnZoom && isShowOverlay.value && !props.controller?.isShowOverlay.value) {
+                runOnJS(props.onToggleOverlay)();
+            }
         }
     }, [props.onZoomBegin, props.onZoomEnd]);
     const gesture = useMemo(() => {
@@ -210,6 +223,9 @@ export const useGestureImageView = ({ isSwipeEnabled = true, isZoomEnabled = tru
             .onStart(() => {
             'worklet';
             runOnJS(props.onToggleOverlay)();
+            if (props.hideOverlayOnZoom) {
+                isShowOverlay.value = props.controller?.isShowOverlay.value ? 0 : 1;
+            }
         })
             .numberOfTaps(1)
             .simultaneousWithExternalGesture(props.gesturePanRef);
