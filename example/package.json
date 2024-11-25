@@ -4,8 +4,8 @@
   "main": "index",
   "scripts": {
     "start": "expo start --dev-client",
-    "android": "expo start --android",
-    "ios": "expo start --ios"
+    "android": "expo run:android",
+    "ios": "expo run:ios"
   },
   "dependencies": {
     "expo": "~50.0.21",
