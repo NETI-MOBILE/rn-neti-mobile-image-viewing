@@ -1,7 +1,7 @@
 import React, { FC, useRef } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { ImageViewing, ImageViewingInstance } from 'rn-neti-mobile-image-viewing';
+import { ImageViewing, ImageViewingInstance } from 'rn-nextika-image-viewing';
 
 export const Content: FC = () => {
   const insets = useSafeAreaInsets();

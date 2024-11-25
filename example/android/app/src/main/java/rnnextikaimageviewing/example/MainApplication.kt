@@ -1,4 +1,4 @@
-package rnnetimobileimageviewing.example
+package rnnextikaimageviewing.example
 
 import android.app.Application
 import android.content.res.Configuration

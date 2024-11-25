@@ -1,4 +1,4 @@
-rootProject.name = 'rn-neti-mobile-image-viewing-example'
+rootProject.name = 'rn-nextika-image-viewing-example'
 
 dependencyResolutionManagement {
   versionCatalogs {

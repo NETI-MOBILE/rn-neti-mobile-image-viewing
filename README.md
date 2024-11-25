@@ -1,4 +1,4 @@
-# rn-neti-mobile-image-viewing
+# rn-nextika-image-viewing
 
 React-Native library for image viewing with zoom and orientation change.
 
@@ -8,9 +8,9 @@ https://github.com/user-attachments/assets/1b89f85f-4bdc-4219-abb2-d70f3e92746a
 
   ```sh
 # npm
-npm install rn-neti-mobile-image-viewing
+npm install rn-nextika-image-viewing
 # yarn
-yarn add rn-neti-mobile-image-viewing
+yarn add rn-nextika-image-viewing
 ```
 
 ## Peer dependencies
@@ -22,7 +22,7 @@ when working with photos and zoom. In another case EdgeInsets (top/bottom/left/r
 You can check common usage via console `yarn example start` or by link [example](./example/src/components/Content.tsx)
 
   ```jsx
-import { ImageViewing, ImageViewingInstance } from 'rn-neti-mobile-image-viewing';
+import { ImageViewing, ImageViewingInstance } from 'rn-nextika-image-viewing';
 
 export default function App() {
   return <ImageViewing ref={imageViewingRef} images={images} insets={insets} isOrientationEnabled />;

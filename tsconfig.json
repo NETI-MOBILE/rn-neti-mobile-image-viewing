@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "rn-neti-mobile-image-viewing": ["./src/index"]
+      "rn-nextika-image-viewing": ["./src/index"]
     },
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,

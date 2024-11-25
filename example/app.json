@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "rn-neti-mobile-image-viewing-example",
-    "slug": "rn-neti-mobile-image-viewing-example",
+    "name": "rn-nextika-image-viewing-example",
+    "slug": "rn-nextika-image-viewing-example",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -13,16 +13,16 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "rnnetimobileimageviewing.example"
+      "bundleIdentifier": "rnnextikaimageviewing.example"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "rnnetimobileimageviewing.example"
+      "package": "rnnextikaimageviewing.example"
     },
-    "description": "Example app for rn-neti-mobile-image-viewing",
+    "description": "Example app for rn-nextika-image-viewing",
     "privacy": "public",
     "platforms": [
       "ios",

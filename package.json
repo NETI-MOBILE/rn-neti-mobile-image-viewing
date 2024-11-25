@@ -1,5 +1,5 @@
 {
-  "name": "rn-neti-mobile-image-viewing",
+  "name": "rn-nextika-image-viewing",
   "version": "1.0.0",
   "description": "React Native library for image viewing",
   "source": "./src/index.tsx",
@@ -29,7 +29,7 @@
     "clean": "del-cli lib",
     "prepare": "bob build",
     "release": "release-it",
-    "example": "yarn workspace rn-neti-mobile-image-viewing-example",
+    "example": "yarn workspace rn-nextika-image-viewing-example",
     "postinstall": "husky install",
     "pre-commit": "tsc --pretty && eslint ."
   },
@@ -40,14 +40,14 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/NETI-MOBILE/rn-neti-mobile-image-viewing.git"
+    "url": "git+https://github.com/Nextika/rn-nextika-image-viewing.git"
   },
-  "author": "Neti.Mobile <lvafin@i-neti.ru> (https://github.com/NETI-MOBILE)",
+  "author": "Nextika <system@nextika.ru> (https://github.com/Nextika)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/NETI-MOBILE/rn-neti-mobile-image-viewing/issues"
+    "url": "https://github.com/Nextika/rn-nextika-image-viewing/issues"
   },
-  "homepage": "https://github.com/NETI-MOBILE/rn-neti-mobile-image-viewing#readme",
+  "homepage": "https://github.com/Nextika/rn-nextika-image-viewing#readme",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
