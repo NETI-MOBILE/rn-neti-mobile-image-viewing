@@ -20,8 +20,11 @@ when working with photos and zoom. In another case EdgeInsets (top/bottom/left/r
 
 ## Usage
 You can check common usage via console `yarn example start` or by link [example](./example/src/components/Content.tsx)
-If android installation gives you an error: Please make and install a development build on the device first.
-You need to run `yarn example android` first, to install the required build.
+
+If example installation gives you an error: Please make and install a development build on the device first.
+You need to run `yarn example android` or `yarn example ios` first, to install the required build.
+If there are any problems with the example build, you might need to delete the *example/ios* or *example/android*
+sections and then run above commands once more.
 
   ```jsx
 import { ImageViewing, ImageViewingInstance } from 'rn-nextika-image-viewing';
